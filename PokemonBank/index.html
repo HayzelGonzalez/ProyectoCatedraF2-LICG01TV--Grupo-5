@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <!-- Codificación para usar tildes, ñ y símbolos correctamente. -->
+  <meta charset="UTF-8">
+
+  <!-- Hace que el diseño se adapte a celulares y tablets. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Título de la pestaña del navegador. -->
+  <title>Login | Pokémon Bank</title>
+
+  <!-- Icono de la pestaña. -->
+  <link rel="icon" type="image/png" href="images/PKBL.png">
+
+  <!-- Bootstrap se usa como base visual y responsive. -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+  >
+
+  <!-- Estilos propios del proyecto. -->
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+
+<body>
+  <!-- Página completa del login. El fondo cambia según la hora desde main.js. -->
+  <div class="atm-page">
+    <main class="atm-panel" aria-label="Login de Pokémon Bank">
+
+      <!-- Logo superior del cajero. -->
+      <div class="atm-logo-wrap">
+        <img src="./images/PKBC.png" alt="Pokémon Bank" class="atm-logo">
+      </div>
+
+      <!-- Pantalla donde se muestra el PIN ingresado con el teclado visual. -->
+      <div class="atm-screen">
+        <input
+          type="password"
+          id="pin"
+          maxlength="4"
+          placeholder="----"
+          readonly
+          aria-label="PIN de acceso"
+        >
+      </div>
+
+      <!-- Zona inferior del cajero: teclado numérico y botones laterales. -->
+      <div class="atm-content">
+
+        <!-- Teclado numérico del PIN. -->
+        <div class="atm-keypad" aria-label="Teclado numérico">
+          <button type="button" onclick="agregarNumero('1')">1</button>
+          <button type="button" onclick="agregarNumero('2')">2</button>
+          <button type="button" onclick="agregarNumero('3')">3</button>
+
+          <button type="button" onclick="agregarNumero('4')">4</button>
+          <button type="button" onclick="agregarNumero('5')">5</button>
+          <button type="button" onclick="agregarNumero('6')">6</button>
+
+          <button type="button" onclick="agregarNumero('7')">7</button>
+          <button type="button" onclick="agregarNumero('8')">8</button>
+          <button type="button" onclick="agregarNumero('9')">9</button>
+
+          <!-- Espacios vacíos para centrar el cero. -->
+          <div></div>
+          <button type="button" onclick="agregarNumero('0')">0</button>
+          <div></div>
+        </div>
+
+        <!-- Botones laterales del login. -->
+        <div class="atm-actions" aria-label="Acciones del login">
+          <button type="button" onclick="cancelarOperacion()">CANCELAR</button>
+          <button type="button" onclick="limpiarPin()">LIMPIAR</button>
+          <button type="button" onclick="iniciarSesion()">ENTER</button>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- SweetAlert para mensajes de error, éxito y confirmación. -->
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+  <!-- Lógica principal del proyecto. -->
+  <script src="./js/main.js"></script>
+</body>
+</html>
+<!-- Fin index.html de Proyecto Fase 2 -->

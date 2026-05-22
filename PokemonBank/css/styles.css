@@ -1,0 +1,2293 @@
+/* ========================================================
+   POKÉMON BANK - STYLES.CSS
+   ========================================================
+   Archivo depurado, ordenado y comentado.
+
+   Este archivo controla toda la parte visual del proyecto:
+   - Login tipo cajero automático.
+   - Pantalla principal de acciones.
+   - Modales de depósito, retiro y pago de servicios.
+   - Alertas SweetAlert.
+   - Historial y gráfico de transacciones.
+   - Adaptación responsive para desktop, tablet y celular.
+
+   Orden general:
+   1. Variables y configuración base.
+   2. Login tipo cajero.
+   3. Pantalla principal de acciones.
+   4. Modales normales.
+   5. Modales depósito/retiro tipo cajero.
+   6. SweetAlert.
+   7. Historial, gráfico y botón volver.
+   8. Responsive general.
+   ======================================================== */
+
+
+/* ========================================================
+   1. VARIABLES Y CONFIGURACIÓN BASE
+   ======================================================== */
+
+:root {
+  /* Colores principales del proyecto.
+     Usar variables ayuda a cambiar colores desde un solo lugar. */
+  --azul: #2b4ea2;
+  --azul-oscuro: #1f3c84;
+  --azul-bootstrap: #0d6efd;
+  --azul-bootstrap-hover: #0b5ed7;
+
+  --azul-tabla: #1e3c7a;
+  --azul-tabla-sombra: #142a57;
+  --azul-boton-suave: #4f82dc;
+
+  --rojo: #dc3545;
+  --rojo-hover: #c82333;
+
+  --rojo-palido: #fde8e8;
+
+  --naranja: #ffa832;
+  --naranja-hover: #c96a16;
+
+  --naranja-reciente: #ff9431;
+  --naranja-reciente-hover: #d9741f;
+
+  --amarillo: #ffcc33;
+
+  --verde-transaccion: #198754;
+  --verde-palido: #e8f5e9;
+
+  --gris: #6c757d;
+  --gris-hover: #5a6268;
+
+  --blanco: #ffffff;
+  --texto-oscuro: #1f2d3d;
+
+  /* Fondo general que se usa en páginas internas. */
+  --fondo-page: linear-gradient(135deg, #e9edf1, #d8dee5);
+
+  /* Sombras reutilizables para mantener consistencia visual. */
+  --shadow-suave: 0 6px 14px rgba(0, 0, 0, 0.12);
+  --shadow-media: 0 8px 16px rgba(0, 0, 0, 0.22);
+  --shadow-fuerte: 0 18px 45px rgba(0, 0, 0, 0.35);
+
+  /* Transición general para botones con animación. */
+  --transicion-boton:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    filter 0.18s ease;
+}
+
+/* Evita que padding y border aumenten el ancho real de los elementos. */
+* {
+  box-sizing: border-box;
+}
+
+/* Fondo y fuente general del proyecto. */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--fondo-page);
+}
+
+/* Suaviza todas las tarjetas Bootstrap usadas en el proyecto. */
+.card {
+  border-radius: 20px;
+}
+
+/* Estilo base de botones Bootstrap. */
+.btn {
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+/* Ajuste visual de tablas. */
+.table {
+  margin-bottom: 0;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+/* Quita línea inferior fuerte del encabezado de las tablas. */
+.table thead th {
+  border-bottom: 0 !important;
+}
+
+
+/* ========================================================
+   2. LOGIN TIPO CAJERO
+   ======================================================== */
+
+/* Contenedor principal del login.
+   Ocupa toda la pantalla y centra el cajero. */
+.atm-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Fondos del login según la hora del día.
+   Estas clases las agrega main.js automáticamente. */
+
+/* 00:00 - 04:59 | Madrugada */
+.fondo-madrugada {
+  background-image:
+    linear-gradient(rgba(0, 0, 20, 0.25), rgba(0, 0, 0, 0.35)),
+    url("../images/W8PK.png");
+}
+
+/* 05:00 - 06:59 | Amanecer */
+.fondo-amanecer {
+  background-image:
+    linear-gradient(rgba(255, 210, 180, 0.08), rgba(120, 80, 140, 0.10)),
+    url("../images/W1PK.png");
+}
+
+/* 07:00 - 09:59 | Mañana */
+.fondo-manana {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.08), rgba(180, 220, 255, 0.08)),
+    url("../images/W2PK.png");
+}
+
+/* 10:00 - 12:59 | Mediodía */
+.fondo-mediodia {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.06)),
+    url("../images/W3PK.png");
+}
+
+/* 13:00 - 16:59 | Tarde */
+.fondo-tarde {
+  background-image:
+    linear-gradient(rgba(255, 210, 160, 0.08), rgba(60, 90, 140, 0.10)),
+    url("../images/W4PK.png");
+}
+
+/* 17:00 - 18:29 | Atardecer */
+.fondo-atardecer {
+  background-image:
+    linear-gradient(rgba(255, 120, 80, 0.10), rgba(90, 40, 120, 0.12)),
+    url("../images/W5PK.png");
+}
+
+/* 18:30 - 19:29 | Anochecer */
+.fondo-anochecer {
+  background-image:
+    linear-gradient(rgba(180, 20, 100, 0.08), rgba(40, 10, 60, 0.18)),
+    url("../images/W6PK.png");
+}
+
+/* 19:30 - 23:59 | Noche */
+.fondo-noche {
+  background-image:
+    linear-gradient(rgba(5, 10, 35, 0.25), rgba(0, 0, 0, 0.38)),
+    url("../images/W7PK.png");
+}
+
+/* Caja principal del cajero.
+   Tiene efecto de vidrio con transparencia y blur. */
+.atm-panel {
+  position: relative;
+  width: 780px;
+  max-width: 95%;
+  min-height: 650px;
+  padding: 82px 36px 28px;
+  overflow: visible;
+  border-radius: 32px;
+  background: rgba(10, 20, 40, 0.45);
+  backdrop-filter: blur(8px);
+  box-shadow: var(--shadow-fuerte);
+}
+
+/* Contenedor del logo superior.
+   Está en posición absoluta para que sobresalga del cajero. */
+.atm-logo-wrap {
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  z-index: 20;
+  width: 320px;
+  height: 82px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translateX(-50%);
+}
+
+/* Logo del login. */
+.atm-logo {
+  width: 100%;
+  max-height: 90px;
+  display: block;
+  object-fit: contain;
+}
+
+/* Pantalla donde aparece el PIN. */
+.atm-screen {
+  width: 100%;
+  height: 200px;
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid rgba(255, 255, 255, 0.55);
+  border-radius: 36px;
+  background: rgba(255, 255, 255, 0.22);
+  box-shadow: inset 0 0 25px rgba(255, 255, 255, 0.18);
+}
+
+/* Input del PIN.
+   Es readonly porque se llena con el keypad visual. */
+.atm-screen input {
+  width: 80%;
+  height: 70px;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--blanco);
+  text-align: center;
+  font-size: 42px;
+  font-weight: 700;
+  letter-spacing: 12px;
+}
+
+.atm-screen input::placeholder {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* Zona inferior: keypad + botones laterales. */
+.atm-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 38px;
+}
+
+/* Teclado numérico del login. */
+.atm-keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 115px);
+  gap: 18px 22px;
+}
+
+/* Botones laterales del login. */
+.atm-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* Base compartida para botones del login y de los modales tipo cajero.
+   Así todos tienen la misma sensación al hacer hover o click. */
+.atm-keypad button,
+.atm-actions button,
+.modal-atm-dialog .modal-atm-keypad button,
+.modal-atm-dialog .modal-atm-actions button {
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transicion-boton);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+}
+
+/* Botones numéricos. */
+.atm-keypad button,
+.modal-atm-dialog .modal-atm-keypad button {
+  color: var(--texto-oscuro);
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: var(--shadow-media);
+}
+
+/* Botones de acción. */
+.atm-actions button,
+.modal-atm-dialog .modal-atm-actions button {
+  color: var(--blanco);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+}
+
+/* Tamaño de botones del login. */
+.atm-keypad button {
+  height: 68px;
+  border-radius: 18px;
+  font-size: 22px;
+}
+
+.atm-actions button {
+  width: 170px;
+  height: 78px;
+  border-radius: 20px;
+  font-size: 18px;
+}
+
+/* Colores de botones laterales:
+   1. Cancelar.
+   2. Limpiar.
+   3. Enter. */
+.atm-actions button:nth-child(1),
+.modal-atm-dialog .modal-atm-actions .modal-action-cancel {
+  background: rgba(220, 53, 69, 0.92);
+}
+
+.atm-actions button:nth-child(2),
+.modal-atm-dialog .modal-atm-actions .modal-action-clear {
+  background: rgba(255, 168, 50, 0.92);
+}
+
+.atm-actions button:nth-child(3),
+.modal-atm-dialog .modal-atm-actions .modal-action-confirm {
+  background: rgba(25, 135, 84, 0.92);
+}
+
+/* Hover solo para dispositivos con mouse.
+   Esto evita comportamientos raros en celulares táctiles. */
+@media (hover: hover) and (pointer: fine) {
+  .atm-keypad button:hover,
+  .atm-actions button:hover,
+  .modal-atm-dialog .modal-atm-keypad button:hover,
+  .modal-atm-dialog .modal-atm-actions button:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.08);
+    box-shadow: 0 14px 22px rgba(0, 0, 0, 0.35);
+  }
+}
+
+/* Efecto de presión para login y modales tipo cajero. */
+.atm-keypad button:active,
+.atm-actions button:active,
+.modal-atm-dialog .modal-atm-keypad button:active,
+.modal-atm-dialog .modal-atm-actions button:active {
+  transform: translateY(2px) scale(0.97);
+  filter: brightness(0.95);
+  box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.22);
+}
+
+
+/* ========================================================
+   3. PANTALLA PRINCIPAL DE ACCIONES
+   ======================================================== */
+
+/* Contenedor del logo en la pantalla principal. */
+.bank-logo-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 22px;
+}
+
+.bank-logo {
+  width: 260px;
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Tarjeta principal en vista móvil/tablet. */
+.main-card {
+  width: 100%;
+  max-width: 500px;
+  padding: 24px;
+  overflow: hidden;
+  border: none;
+  border-radius: 28px;
+  background-color: var(--blanco);
+}
+
+/* Encabezado con datos del usuario. */
+.top-section {
+  position: relative;
+  z-index: 2;
+  margin: -24px -24px 28px;
+  padding: 28px 28px 24px;
+  border-radius: 24px;
+  background-color: #f8f9fa;
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.22);
+}
+
+/* Sección donde van los botones de operaciones. */
+.actions-section {
+  position: relative;
+  z-index: 1;
+}
+
+.action-buttons {
+  margin-top: 0;
+}
+
+/* Respeta separación interna de columnas Bootstrap en móvil/tablet. */
+.action-buttons .col-md-6 {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Datos del usuario. */
+.user-panel {
+  margin-top: 10px;
+}
+
+.user-avatar {
+  width: 65px;
+  height: 65px;
+  object-fit: cover;
+  border: 3px solid var(--azul);
+  border-radius: 50%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.user-data-box p {
+  margin: 0;
+  padding-left: 15px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* Botones principales.
+   Se usa flex para centrar perfectamente el texto. */
+.btn-logout-custom,
+.btn-bank {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  color: var(--blanco);
+  text-align: center;
+  font-weight: 700;
+}
+
+/* Botón de cierre de sesión. */
+.btn-logout-custom {
+  width: 100%;
+  min-height: 52px;
+  border-radius: 16px;
+  background-color: var(--rojo);
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+/* Botones grandes de operaciones. */
+.btn-bank {
+  min-height: 78px;
+  padding: 14px 20px;
+  border-radius: 16px;
+  font-size: 21px;
+  text-decoration: none;
+  box-shadow: var(--shadow-suave);
+}
+
+.btn-bank:hover,
+.btn-logout-custom:hover {
+  color: var(--blanco);
+  text-decoration: none;
+}
+
+.btn-bank:focus,
+.btn-logout-custom:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Colores de operaciones. */
+.btn-depositar {
+  background-color: var(--amarillo);
+}
+
+.btn-retirar {
+  background-color: var(--naranja);
+}
+
+.btn-saldo {
+  background-color: #fe8330;
+}
+
+.btn-servicios {
+  background-color: #fe5f2f;
+}
+
+.btn-historial {
+  background-color: var(--azul);
+}
+
+/* Botón blanco para diferenciar el gráfico. */
+.btn-grafico,
+.btn-grafico:hover {
+  color: var(--azul);
+  background-color: var(--blanco);
+}
+
+/* Animación de botones de acciones. */
+.acciones-page .btn-bank,
+.acciones-page .btn-logout-custom {
+  transition: var(--transicion-boton);
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .acciones-page .btn-bank:hover,
+  .acciones-page .btn-logout-custom:hover {
+    transform: translateY(-4px);
+    filter: brightness(1.05);
+    box-shadow: 0 14px 24px rgba(0, 0, 0, 0.24);
+  }
+}
+
+/* Hundimiento al presionar botones principales. */
+.acciones-page .btn-bank:active,
+.acciones-page .btn-logout-custom:active {
+  transform: translateY(4px) scale(0.96);
+  filter: brightness(0.93);
+  box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.28);
+}
+
+
+/* ========================================================
+   4. MODALES NORMALES
+   ======================================================== */
+
+/* Texto de dólar y labels en negrita. */
+.dolar-bold,
+.modal-body label {
+  font-weight: 700;
+}
+
+/* Ancho base de modales normales. */
+.modal-form {
+  max-width: 500px;
+}
+
+/* Caja visual del modal. */
+.modal-content {
+  overflow: hidden;
+  border: none;
+  border-radius: 18px;
+}
+
+/* Header azul de los modales. */
+.modal-header-bank {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 14px 20px;
+  border-bottom: none;
+  color: var(--blanco);
+  background-color: var(--azul-bootstrap);
+}
+
+.modal-title {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* Botón X de cierre.
+   En depósito/retiro se oculta porque se usa CANCELAR del keypad. */
+.modal-close-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 46px;
+  height: 100%;
+  border: none;
+  color: var(--blanco);
+  background: transparent;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.modal-close-btn:hover {
+  background-color: #c42b1c;
+}
+
+.modal-close-btn:focus {
+  outline: none;
+}
+
+/* Separación entre botones de footer normal. */
+.modal-footer .btn + .btn {
+  margin-left: 40px;
+}
+
+/* Botones normales de los modales. */
+.btn-modal-confirm,
+.btn-modal-cancel,
+.btn-modal-clear {
+  min-width: 130px;
+  padding: 10px 22px;
+  border: none;
+  border-radius: 12px;
+  color: var(--blanco);
+  font-weight: 700;
+  transition: all 0.25s ease;
+}
+
+/* Botón confirmar. */
+.btn-modal-confirm {
+  background-color: var(--azul-bootstrap);
+}
+
+.btn-modal-confirm:hover {
+  color: var(--blanco);
+  background-color: var(--azul-bootstrap-hover);
+}
+
+/* Botón cancelar. */
+.btn-modal-cancel {
+  background-color: var(--gris);
+}
+
+.btn-modal-cancel:hover {
+  color: var(--blanco);
+  background-color: var(--gris-hover);
+}
+
+/* Botón limpiar. */
+.btn-modal-clear {
+  background-color: var(--naranja);
+}
+
+.btn-modal-clear:hover {
+  color: var(--blanco);
+  background-color: var(--naranja-hover);
+}
+
+
+/* ========================================================
+   5. MODALES DEPÓSITO / RETIRO TIPO CAJERO
+   ======================================================== */
+
+/* En estos modales se usa el keypad propio.
+   Por eso se oculta el footer normal y la X de cerrar. */
+.modal-atm-dialog .modal-mobile-footer,
+.modal-atm-dialog .modal-close-btn {
+  display: none !important;
+}
+
+/* Contenedor interno de keypad + botones especiales. */
+.modal-atm-content {
+  display: grid;
+}
+
+/* Etiqueta del monto. */
+.modal-atm-dialog .modal-amount-label {
+  display: block;
+  margin: 0 0 14px;
+  color: var(--texto-oscuro);
+  font-size: 24px;
+  font-weight: 700;
+}
+
+/* Pantalla del monto. */
+.modal-atm-dialog .modal-amount-screen {
+  overflow: hidden;
+  border: 3px solid var(--azul-bootstrap);
+  border-radius: 24px;
+  background-color: var(--blanco);
+}
+
+/* Hace que el símbolo $ y el input ocupen toda la altura del contenedor. */
+.modal-atm-dialog .modal-amount-screen .input-group-prepend,
+.modal-atm-dialog .modal-amount-screen .input-group-text,
+.modal-atm-dialog .modal-amount-input {
+  height: 100%;
+}
+
+/* Símbolo de dólar dentro del input. */
+.modal-atm-dialog .modal-amount-screen .input-group-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 0;
+  border-right: 3px solid var(--azul-bootstrap);
+  border-radius: 0;
+  color: var(--azul);
+  background-color: var(--blanco);
+  font-weight: 700;
+}
+
+/* Input del monto.
+   readonly para que se llene con el keypad visual. */
+.modal-atm-dialog .modal-amount-input {
+  border: 0;
+  border-radius: 0;
+  color: var(--texto-oscuro);
+  background-color: var(--blanco);
+  text-align: center;
+  font-weight: 700;
+  box-shadow: none;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.modal-atm-dialog .modal-amount-input::placeholder {
+  color: var(--gris);
+  font-weight: 700;
+  opacity: 1;
+}
+
+/* Oculta flechas del input number en navegadores WebKit. */
+.modal-atm-dialog .modal-amount-input::-webkit-outer-spin-button,
+.modal-atm-dialog .modal-amount-input::-webkit-inner-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+}
+
+.modal-atm-dialog .modal-amount-input:focus {
+  box-shadow: none;
+}
+
+/* Espacios invisibles para centrar el cero del keypad. */
+.modal-atm-dialog .modal-atm-keypad .keypad-empty {
+  visibility: hidden;
+}
+
+
+/* ========================================================
+   5.1 MODALES TIPO CAJERO EN DESKTOP
+   ======================================================== */
+
+@media (min-width: 993px) {
+  /* Modal más ancho para simular cajero en computadora. */
+  .modal-atm-dialog {
+    max-width: 760px;
+    margin: 10px auto;
+  }
+
+  .modal-atm-dialog .modal-content {
+    height: min(690px, calc(100vh - 20px));
+    max-height: calc(100vh - 20px);
+    border: none;
+    border-radius: 78px 78px 44px 44px;
+    background-color: var(--blanco);
+  }
+
+  .modal-atm-dialog .modal-header-bank {
+    min-height: 64px;
+    border-bottom: 3px solid rgba(13, 110, 253, 0.24);
+    border-radius: 78px 78px 0 0;
+  }
+
+  .modal-atm-dialog .modal-title {
+    font-size: 22px;
+    font-weight: 700;
+  }
+
+  .modal-atm-dialog .modal-atm-body {
+    padding: 24px 42px 0;
+  }
+
+  /* Grupo del label y pantalla del monto. */
+  .modal-atm-dialog .modal-amount-group {
+    width: min(100%, 610px);
+    margin: 0 auto;
+  }
+
+  .modal-atm-dialog .modal-amount-label {
+    margin-bottom: 14px;
+    font-size: 24px;
+  }
+
+  .modal-atm-dialog .modal-amount-screen {
+    width: 100%;
+    height: 108px;
+  }
+
+  .modal-atm-dialog .modal-amount-screen .input-group-text {
+    width: 86px;
+    font-size: 28px;
+  }
+
+  .modal-atm-dialog .modal-amount-input {
+    font-size: 32px;
+  }
+
+  /* Zona inferior: keypad a la izquierda y botones especiales a la derecha. */
+  .modal-atm-dialog .modal-atm-content {
+    position: relative;
+    grid-template-columns: 1fr 128px;
+    align-items: start;
+    column-gap: 28px;
+    margin: 32px -42px 0;
+    padding: 22px 34px 24px;
+    border-top: none;
+  }
+
+  /* Línea divisora entre input y keypad. */
+  .modal-atm-dialog .modal-atm-content::before {
+    content: "";
+    position: absolute;
+    top: -8px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: #dce3ea;
+  }
+
+  /* Teclado numérico del modal.
+     El transform ajusta la posición visual sin afectar el HTML. */
+  .modal-atm-dialog .modal-atm-keypad {
+    display: grid;
+    grid-template-columns: repeat(3, 135px);
+    justify-content: center;
+    gap: 14px 28px;
+    border-top: none;
+    transform: translate(-20px, 18px);
+  }
+
+  .modal-atm-dialog .modal-atm-keypad button {
+    height: 66px;
+    border-radius: 18px;
+    font-size: 22px;
+  }
+
+  /* Botones CANCELAR, LIMPIAR y ENTER. */
+  .modal-atm-dialog .modal-atm-actions {
+    height: 306px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    transform: translate(-15px, 18px);
+  }
+
+  .modal-atm-dialog .modal-atm-actions button {
+    width: 152px;
+    height: 82px;
+    padding: 8px 10px;
+    border-radius: 20px;
+    font-size: 15px;
+  }
+}
+
+
+/* ========================================================
+   5.2 MODALES TIPO CAJERO EN TABLET / CELULAR
+   ======================================================== */
+
+@media (max-width: 992px) {
+  /* Tamaño más compacto para pantallas pequeñas. */
+  .modal-atm-dialog {
+    width: min(88vw, 390px);
+    max-width: 390px;
+    height: min(94dvh, 680px);
+    margin: 28px auto 0;
+    display: flex;
+    align-items: stretch;
+  }
+
+  .modal-atm-dialog .modal-content {
+    width: 100%;
+    height: 100%;
+    max-height: none;
+    display: flex;
+    flex-direction: column;
+    border-radius: 38px;
+    background-color: var(--blanco);
+  }
+
+  .modal-atm-dialog .modal-header-bank {
+    height: 58px;
+    min-height: 58px;
+    padding: 0 16px;
+    flex-shrink: 0;
+    border-radius: 38px 38px 0 0;
+  }
+
+  .modal-atm-dialog .modal-title {
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .modal-atm-dialog .modal-atm-body {
+    flex: 1;
+    min-height: 0;
+    padding: 14px 18px 18px;
+    overflow: hidden;
+  }
+
+  /* Distribuye verticalmente:
+     1. Bloque de monto.
+     2. Teclado numérico.
+     3. Botones especiales. */
+  .modal-atm-dialog .modal-atm-body form {
+    height: 100%;
+    display: grid;
+    grid-template-rows: 168px auto auto;
+    align-content: start;
+    row-gap: 18px;
+  }
+
+  .modal-atm-dialog .modal-amount-group,
+  .modal-atm-dialog .modal-atm-keypad,
+  .modal-atm-dialog .modal-atm-actions {
+    width: 100%;
+    max-width: 412px;
+    margin: 0 auto;
+  }
+
+  .modal-atm-dialog .modal-amount-group {
+    max-width: 312px;
+    align-self: start;
+    padding-top: 14px;
+  }
+
+  .modal-atm-dialog .modal-amount-label {
+    margin: 0 0 12px;
+    color: var(--texto-oscuro);
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .modal-atm-dialog .modal-amount-screen {
+    width: 100%;
+    height: 126px;
+    border-radius: 22px;
+  }
+
+  .modal-atm-dialog .modal-amount-screen .input-group-text {
+    width: 54px;
+    font-size: 20px;
+  }
+
+  .modal-atm-dialog .modal-amount-input {
+    font-size: 20px;
+  }
+
+  /* display: contents permite que el keypad y botones se integren al grid del form. */
+  .modal-atm-dialog .modal-atm-content {
+    min-height: 0;
+    display: contents;
+  }
+
+  .modal-atm-dialog .modal-atm-keypad {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px 12px;
+    justify-self: center;
+    align-self: start;
+    padding-top: 18px;
+    border-top: none;
+  }
+
+  /* Línea divisora en responsive. */
+  .modal-atm-dialog .modal-atm-keypad::before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -18px;
+    width: calc(100% + 36px);
+    height: 1px;
+    background-color: #dce3ea;
+  }
+
+  .modal-atm-dialog .modal-atm-keypad button {
+    height: 46px;
+    border-radius: 14px;
+    font-size: 18px;
+  }
+
+  .modal-atm-dialog .modal-atm-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-self: center;
+    align-self: start;
+    padding: 0;
+  }
+
+  .modal-atm-dialog .modal-atm-actions button {
+    width: 100%;
+    height: 44px;
+    border-radius: 16px;
+    font-size: 14px;
+  }
+}
+
+/* Ajustes para celulares muy pequeños. */
+@media (max-width: 380px) {
+  .modal-atm-dialog {
+    width: min(90vw, 350px);
+    height: min(94dvh, 620px);
+    margin: 22px auto 0;
+  }
+
+  .modal-atm-dialog .modal-content {
+    border-radius: 34px;
+  }
+
+  .modal-atm-dialog .modal-header-bank {
+    height: 58px;
+    min-height: 58px;
+    border-radius: 34px 34px 0 0;
+  }
+
+  .modal-atm-dialog .modal-title {
+    font-size: 17px;
+  }
+
+  .modal-atm-dialog .modal-atm-body {
+    padding: 12px 16px 16px;
+  }
+
+  .modal-atm-dialog .modal-atm-body form {
+    grid-template-rows: 155px auto auto;
+    align-content: start;
+    row-gap: 12px;
+  }
+
+  .modal-atm-dialog .modal-amount-label {
+    margin-bottom: 18px;
+    font-size: 16px;
+  }
+
+  .modal-atm-dialog .modal-amount-screen {
+    height: 100px;
+  }
+
+  .modal-atm-dialog .modal-amount-screen .input-group-text {
+    width: 50px;
+    font-size: 19px;
+  }
+
+  .modal-atm-dialog .modal-amount-input {
+    font-size: 18px;
+  }
+
+  .modal-atm-dialog .modal-atm-keypad {
+    gap: 8px 10px;
+    padding-top: 16px;
+  }
+
+  .modal-atm-dialog .modal-atm-keypad::before {
+    top: -6px;
+    left: -16px;
+    width: calc(100% + 32px);
+  }
+
+  .modal-atm-dialog .modal-atm-keypad button {
+    height: 42px;
+    font-size: 17px;
+  }
+
+  .modal-atm-dialog .modal-atm-actions {
+    gap: 8px;
+  }
+
+  .modal-atm-dialog .modal-atm-actions button {
+    height: 41px;
+    font-size: 13px;
+  }
+}
+
+
+/* ========================================================
+   5.3 MODAL PAGO DE SERVICIOS TIPO CAJERO
+   ======================================================== */
+
+/* Grupo del selector de servicio. */
+.modal-service-dialog .modal-service-group {
+  width: min(100%, 610px);
+  margin: 0 auto 18px;
+}
+
+/* Caja visual del select, similar al input del monto. */
+.modal-service-dialog .modal-service-screen {
+  position: relative;
+  overflow: hidden;
+  border: 3px solid var(--azul-bootstrap);
+  border-radius: 24px;
+  background-color: var(--blanco);
+}
+
+/* Select del servicio. */
+.modal-service-dialog .modal-service-select {
+  width: 100%;
+  height: 100%;
+  padding: 0 72px 0 26px;
+  border: 0;
+  border-radius: 0;
+  color: var(--gris-hover);
+  background-color: var(--blanco);
+  font-weight: 700;
+  box-shadow: none;
+  cursor: pointer;
+  appearance: none;
+}
+
+.modal-service-dialog .modal-service-select option {
+  color: var(--texto-oscuro);
+}
+
+/* Flecha visual del selector. */
+.modal-service-dialog .modal-service-screen::after {
+  content: "▼";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 68px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-left: 3px solid var(--azul-bootstrap);
+  color: var(--azul);
+  background-color: var(--blanco);
+  font-size: 25px;
+  font-weight: 700;
+  pointer-events: none;
+}
+
+/* Cambia la flecha cuando el selector está abierto/activo. */
+.modal-service-dialog .modal-service-screen.select-open::after {
+  content: "▲";
+}
+
+.modal-service-dialog .modal-service-select:focus {
+  box-shadow: none;
+}
+
+
+/* ========================================================
+   MODAL PAGO DE SERVICIOS EN DESKTOP
+   ======================================================== */
+
+@media (min-width: 993px) {
+  /* Reduce un poco la altura general del modal de servicios. */
+  .modal-service-dialog .modal-content {
+    height: min(700px, calc(100vh - 20px));
+  }
+
+  /* Ajusta el espacio interno superior del modal. */
+  .modal-service-dialog .modal-atm-body {
+    padding: 20px 42px 0;
+  }
+
+  /* Mantiene alineados el selector y el input del monto. */
+  .modal-service-dialog .modal-service-group,
+  .modal-service-dialog .modal-amount-group {
+    width: min(100%, 610px);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .modal-service-dialog .modal-service-group {
+    margin-bottom: 16px;
+  }
+
+  /* Alto del selector de servicio. */
+  .modal-service-dialog .modal-service-screen {
+    height: 70px;
+  }
+
+  .modal-service-dialog .modal-service-select {
+    font-size: 20px;
+  }
+
+  /* Texto de "Monto a pagar". */
+  .modal-service-dialog .modal-amount-label {
+    margin-bottom: 10px;
+    font-size: 22px;
+  }
+
+  /* Input del monto más compacto. */
+  .modal-service-dialog .modal-amount-screen {
+    height: 78px;
+  }
+
+  .modal-service-dialog .modal-amount-screen .input-group-text {
+    width: 68px;
+    font-size: 24px;
+  }
+
+  .modal-service-dialog .modal-amount-input {
+    font-size: 28px;
+  }
+
+  /* Zona inferior: línea divisora + keypad + botones laterales. */
+  .modal-service-dialog .modal-atm-content {
+    margin: 18px -42px 0;
+    padding: 18px 34px 18px;
+  }
+
+  .modal-service-dialog .modal-atm-content::before {
+    top: 2px;
+  }
+
+  /* Keypad más baja solo para Pago de servicios. */
+  .modal-service-dialog .modal-atm-keypad {
+    gap: 10px 28px;
+    transform: translate(-20px, 0);
+  }
+
+  .modal-service-dialog .modal-atm-keypad button {
+    height: 62px;
+    border-radius: 16px;
+    font-size: 21px;
+  }
+
+  /* Botones CANCELAR, LIMPIAR y ENTER más compactos. */
+  .modal-service-dialog .modal-atm-actions {
+    height: 278px;
+    transform: translate(-15px, 0);
+  }
+
+  .modal-service-dialog .modal-atm-actions button {
+    height: 68px;
+    border-radius: 18px;
+    font-size: 15px;
+  }
+}
+
+
+/* ========================================================
+   MODAL PAGO DE SERVICIOS EN TABLET / CELULAR
+   ======================================================== */
+
+@media (max-width: 992px) {
+  .modal-service-dialog {
+    height: min(94dvh, 740px);
+  }
+
+  .modal-service-dialog .modal-atm-body form {
+    grid-template-rows: 91px 132px auto auto;
+    row-gap: 14px;
+  }
+
+  .modal-service-dialog .modal-service-group,
+  .modal-service-dialog .modal-amount-group {
+    width: 100%;
+    max-width: 312px;
+    margin: 0 auto;
+    padding-top: 0;
+  }
+
+  .modal-service-dialog .modal-service-screen {
+    height: 62px;
+    border-radius: 18px;
+  }
+
+  .modal-service-dialog .modal-service-select {
+    padding: 0 54px 0 16px;
+    font-size: 15px;
+  }
+
+  .modal-service-dialog .modal-service-screen::after {
+    width: 48px;
+    font-size: 15px;
+  }
+
+  .modal-service-dialog .modal-amount-label {
+    margin-bottom: 12px;
+    font-size: 18px;
+  }
+
+  .modal-service-dialog .modal-amount-screen {
+    height: 76px;
+    border-radius: 18px;
+  }
+
+  .modal-service-dialog .modal-amount-screen .input-group-text {
+    width: 48px;
+    font-size: 18px;
+  }
+
+  .modal-service-dialog .modal-amount-input {
+    font-size: 18px;
+  }
+
+  .modal-service-dialog .modal-atm-keypad {
+    padding-top: 0;
+  }
+
+  .modal-service-dialog .modal-atm-keypad::before {
+    top: -22px;
+  }
+
+  /* Separa la keypad de los botones especiales en Pago de servicios. */
+  .modal-service-dialog .modal-atm-actions {
+    margin-top: 12px;
+  }
+}
+
+/* Ajuste extra para celulares muy pequeños. */
+@media (max-width: 380px) {
+  .modal-service-dialog {
+    height: min(95dvh, 650px);
+    margin: 16px auto 0;
+  }
+
+  /*
+    Distribución vertical del modal de servicios:
+    1. Selector de servicio.
+    2. Monto a pagar.
+    3. Keypad.
+    4. Botones especiales.
+  */
+  .modal-service-dialog .modal-atm-body form {
+    grid-template-rows: 81px 98px auto auto;
+    row-gap: 8px;
+  }
+
+  .modal-service-dialog .modal-service-screen {
+    height: 54px;
+  }
+
+  .modal-service-dialog .modal-service-select {
+    font-size: 14px;
+  }
+
+  .modal-service-dialog .modal-amount-label {
+    margin-bottom: 12px;
+  }
+
+  .modal-service-dialog .modal-amount-screen {
+    height: 62px;
+  }
+
+  .modal-service-dialog .modal-amount-input {
+    font-size: 16px;
+  }
+
+  .modal-service-dialog .modal-atm-keypad {
+    padding-top: 15px;
+  }
+
+  .modal-service-dialog .modal-atm-keypad::before {
+    top: -4px;
+  }
+
+  /* Separa la keypad de los botones especiales. */
+  .modal-service-dialog .modal-atm-actions {
+    margin-top: 10px;
+  }
+
+  .modal-service-dialog .modal-atm-actions button {
+    height: 39px;
+  }
+}
+
+
+/* ========================================================
+   6. SWEETALERT
+   ======================================================== */
+
+/* Caja principal de SweetAlert. */
+.swal-modal {
+  border-radius: 18px;
+}
+
+/* Centra textos y footer. */
+.swal-title,
+.swal-text,
+.swal-footer {
+  text-align: center;
+}
+
+/* Texto secundario de las alertas. */
+.swal-text {
+  margin-top: 12px;
+  color: gray;
+}
+
+/* Separación horizontal entre botones. */
+.swal-button-container {
+  margin: 0 55px;
+}
+
+/* Botón confirmar normal. */
+.swal-button--confirm {
+  background-color: var(--azul-bootstrap);
+}
+
+.swal-button--confirm:hover {
+  background-color: var(--azul-bootstrap-hover);
+}
+
+/* Botón especial del comprobante PDF.
+   Se vuelve rojo al pasar el cursor. */
+.btn-generar-pdf:hover {
+  background-color: var(--rojo) !important;
+  color: var(--blanco) !important;
+}
+
+/* Botón cancelar de SweetAlert. */
+.swal-button--cancel {
+  background-color: var(--gris);
+}
+
+/* Hover rojo para cancelar. */
+.swal-button--cancel:hover {
+  background-color: var(--rojo) !important;
+  color: var(--blanco) !important;
+}
+
+/* Animación de presión en botones SweetAlert. */
+.swal-button {
+  transition:
+    transform 0.09s ease,
+    box-shadow 0.09s ease,
+    filter 0.09s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.swal-button:active {
+  transform: translateY(7px) scale(0.92);
+  filter: brightness(0.88);
+  box-shadow:
+    inset 0 6px 12px rgba(0, 0, 0, 0.35),
+    inset 0 -2px 4px rgba(255, 255, 255, 0.18);
+}
+
+.swal-footer {
+  margin-top: 12px;
+}
+
+
+/* ========================================================
+   6.1 SWEETALERT EN DESKTOP
+   ======================================================== */
+
+@media (min-width: 993px) {
+  /* Centra la alerta en pantalla. */
+  .swal-overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+  }
+
+  /* Caja grande para alertas en computadora. */
+  .swal-modal {
+    width: min(56vw, 1050px);
+    min-height: min(62vh, 620px);
+    padding: 60px 90px 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 95px;
+  }
+
+  .swal-icon {
+    transform: scale(1.18);
+    margin-top: 0;
+    margin-bottom: 28px;
+  }
+
+  .swal-title {
+    margin: 0 0 22px;
+    font-size: 34px;
+    font-weight: 700;
+  }
+
+  .swal-text {
+    max-width: 760px;
+    margin: 0 auto;
+    font-size: 22px;
+    line-height: 1.5;
+  }
+
+  .swal-footer {
+    margin-top: 42px;
+  }
+
+  .swal-button {
+    min-width: 160px;
+    min-height: 52px;
+    padding: 12px 28px;
+    border-radius: 16px;
+    font-size: 18px;
+    font-weight: 700;
+  }
+}
+
+
+/* ========================================================
+   6.2 SWEETALERT EN CELULAR
+   ======================================================== */
+
+@media (max-width: 576px) {
+  .swal-modal {
+    width: calc(100vw - 42px);
+    max-width: 340px;
+    min-height: auto;
+    padding: 26px 22px 20px;
+    border-radius: 22px;
+  }
+
+  .swal-icon {
+    transform: scale(0.9);
+    margin-top: 4px;
+    margin-bottom: 14px;
+  }
+
+  .swal-title {
+    margin: 0 0 12px;
+    font-size: 25px;
+    line-height: 1.18;
+  }
+
+  .swal-text {
+    max-width: 100%;
+    margin: 0 auto;
+    font-size: 16px;
+    line-height: 1.3;
+  }
+
+  .swal-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 37px;
+    margin-top: 24px;
+    padding: 0;
+  }
+
+  .swal-button-container {
+    margin: 0;
+  }
+
+  .swal-button {
+    min-width: 105px;
+    min-height: 42px;
+    padding: 9px 16px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+  }
+}
+
+/* Ajuste para celulares muy pequeños. */
+@media (max-width: 380px) {
+  .swal-modal {
+    width: calc(100vw - 34px);
+    max-width: 320px;
+    padding: 24px 18px 18px;
+    border-radius: 20px;
+  }
+
+  .swal-title {
+    font-size: 23px;
+  }
+
+  .swal-text {
+    font-size: 15px;
+  }
+
+  .swal-footer {
+    gap: 37px;
+  }
+
+  .swal-button {
+    min-width: 96px;
+    min-height: 40px;
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+}
+
+
+/* ========================================================
+   7. HISTORIAL, GRÁFICO Y BOTÓN VOLVER
+   ======================================================== */
+
+/* Tarjetas de historial y gráfico. */
+.historial-card,
+.grafico-card {
+  overflow: hidden;
+  border: none;
+  border-radius: 20px;
+}
+
+/* Headers de historial y gráfico. */
+.historial-header,
+.grafico-header {
+  position: relative;
+  z-index: 2;
+  margin: 0;
+  padding: 24px 28px;
+  border-radius: 0;
+}
+
+.historial-header {
+  color: var(--blanco);
+  background-color: var(--azul);
+  box-shadow:
+    0 10px 0 var(--azul-oscuro),
+    0 16px 22px rgba(0, 0, 0, 0.18);
+}
+
+.grafico-header {
+  color: var(--azul);
+  background-color: var(--blanco);
+  box-shadow:
+    0 8px 0 #e3e7f2,
+    0 14px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Contenedor del título y botones del header. */
+.historial-header-content,
+.grafico-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+/* Grupo de botones del header. */
+.historial-header-actions,
+.grafico-header-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* Base compartida para botones de historial y gráfico.
+   Aquí se controla tamaño, alineación y animación. */
+.historial-header-actions .btn,
+.grafico-header-actions .btn-reporte-custom {
+  min-height: 52px;
+  padding: 15px 28px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 !important;
+  border: none;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.1;
+  text-align: center;
+  transition: var(--transicion-boton);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Botón: generar transacción reciente. */
+.historial-header-actions .btn-imprimir-reciente {
+  color: var(--blanco);
+  background-color: var(--naranja-reciente);
+}
+
+.historial-header-actions .btn-imprimir-reciente:hover {
+  color: var(--blanco);
+  background-color: var(--naranja-reciente-hover);
+}
+
+/* Botón: generar historial. */
+.historial-header-actions .btn-imprimir-historial {
+  color: var(--blanco);
+  background-color: var(--azul-boton-suave);
+}
+
+.historial-header-actions .btn-imprimir-historial:hover {
+  color: var(--blanco);
+  background-color: var(--azul-bootstrap-hover);
+}
+
+/* Botón: generar reporte del gráfico. */
+.grafico-header-actions .btn-reporte-custom {
+  color: var(--blanco);
+  background-color: var(--azul-boton-suave);
+}
+
+.grafico-header-actions .btn-reporte-custom:hover {
+  color: var(--blanco);
+  background-color: var(--azul-bootstrap-hover);
+  text-decoration: none;
+}
+
+/* Animación de presionado para botones del header. */
+.historial-header-actions .btn:active,
+.grafico-header-actions .btn-reporte-custom:active {
+  transform: translateY(4px) scale(0.93);
+  filter: brightness(0.93);
+  box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.28);
+}
+
+/* Títulos de historial y gráfico. */
+.historial-header h2,
+.grafico-header h2 {
+  margin: 0;
+  font-weight: 700;
+}
+
+.grafico-header h2 {
+  color: var(--azul);
+}
+
+/* Espaciado interno de contenido. */
+.historial-table-section,
+.grafico-content-section {
+  padding: 26px 28px 28px;
+}
+
+/* Encabezado de tabla personalizado. */
+.table-head-custom,
+.table-head-custom th {
+  background-color: var(--azul-tabla);
+}
+
+.table-head-custom th {
+  padding-top: 16px;
+  padding-bottom: 16px;
+  font-size: 18px;
+  font-weight: 750;
+  color: var(--blanco);
+  border-top: none;
+  border-bottom: 0 !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.18);
+  border-right: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: inset 0 -3px 0 var(--azul-tabla-sombra);
+}
+
+/* Contenedor del gráfico Chart.js. */
+.chart-container {
+  position: relative;
+  width: 100%;
+  max-width: 1050px;
+  height: 540px;
+  margin: 0 auto;
+}
+
+
+/* ========================================================
+   7.1 COLORES Y ALINEACIÓN DE LA TABLA DE HISTORIAL
+   ======================================================== */
+
+/* Centra horizontal y verticalmente el texto de todas las celdas. */
+.historial-table-section .table th,
+.historial-table-section .table td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* Fila de depósito con fondo verde pálido. */
+.fila-deposito td {
+  background-color: var(--verde-palido) !important;
+}
+
+/* Texto de depósito y monto de depósito en verde y negrita. */
+.tipo-deposito,
+.monto-deposito {
+  color: var(--verde-transaccion);
+  font-weight: 700;
+}
+
+/* Fila de retiro o pago de servicio con fondo rojo pálido. */
+.fila-salida td {
+  background-color: var(--rojo-palido) !important;
+}
+
+/* Texto de retiro/pago y monto en rojo y negrita. */
+.tipo-salida,
+.monto-salida {
+  color: var(--rojo);
+  font-weight: 700;
+}
+
+/* Texto normal en negrita. */
+.tipo-normal {
+  font-weight: 700;
+}
+
+/* Fila de saldo actual con el mismo estilo visual de la cabecera. */
+.fila-saldo-actual .saldo-label,
+.fila-saldo-actual .saldo-monto {
+  padding-top: 16px;
+  padding-bottom: 16px;
+  background-color: var(--azul-tabla) !important;
+  color: var(--blanco) !important;
+  font-size: 18px;
+  font-weight: 750;
+  text-align: center;
+  vertical-align: middle;
+  border-top: none;
+  border-bottom: 0 !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.18);
+  border-right: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: inset 0 -3px 0 var(--azul-tabla-sombra);
+}
+
+
+/* ========================================================
+   7.2 BOTÓN VOLVER
+   ======================================================== */
+
+/* Botón volver de historial y gráfico. */
+.btn-volver-custom {
+  min-height: 52px;
+  padding: 15px 38px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  border-radius: 12px;
+  color: var(--blanco);
+  background-color: var(--rojo);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.1;
+  text-align: center;
+  transition: var(--transicion-boton);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-volver-custom:hover {
+  color: var(--blanco);
+  background-color: var(--rojo-hover);
+  text-decoration: none;
+}
+
+/* Animación unificada del botón Volver. */
+.btn-volver-custom:active {
+  transform: translateY(4px) scale(0.93);
+  filter: brightness(0.93);
+  box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.28);
+}
+
+
+/* ========================================================
+   7.3 RESPONSIVE DE TABLA DE HISTORIAL
+   ======================================================== */
+
+@media (max-width: 768px) {
+  /* Ajusta el espacio interno de la tarjeta en tablet/celular. */
+  .historial-table-section {
+    padding: 20px 14px 22px;
+  }
+
+  /* Ajusta el header de historial en tablet/celular. */
+  .historial-header-content {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .historial-header-actions {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .historial-header-actions .btn {
+    min-height: 54px;
+    padding: 12px 18px;
+    font-size: 14px;
+  }
+
+  /* Permite mover la tabla hacia los lados si no cabe completa. */
+  .historial-table-section .table-responsive {
+    overflow-x: auto;
+    border-radius: 14px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Evita que las columnas se aplasten demasiado. */
+  .historial-table-section .table {
+    min-width: 620px;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+
+  /* Reduce un poco el alto de las celdas en pantallas medianas. */
+  .historial-table-section .table th,
+  .historial-table-section .table td {
+    padding: 12px 10px;
+  }
+
+  /* Ajusta la cabecera de la tabla en responsive. */
+  .historial-table-section .table-head-custom th {
+    font-size: 15px;
+  }
+
+  /* Ajusta la fila de saldo actual en responsive. */
+  .fila-saldo-actual .saldo-label,
+  .fila-saldo-actual .saldo-monto {
+    padding-top: 13px;
+    padding-bottom: 13px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 576px) {
+  /* Reduce el espacio para que la tabla respire mejor en celular. */
+  .historial-table-section {
+    padding: 16px 10px 18px;
+  }
+
+  /* La tabla sigue siendo desplazable, pero más compacta. */
+  .historial-table-section .table {
+    min-width: 560px;
+    font-size: 13px;
+  }
+
+  .historial-table-section .table th,
+  .historial-table-section .table td {
+    padding: 10px 8px;
+  }
+
+  .historial-table-section .table-head-custom th {
+    font-size: 14px;
+  }
+
+  .fila-saldo-actual .saldo-label,
+  .fila-saldo-actual .saldo-monto {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 380px) {
+  /* Ajuste extra para celulares muy angostos. */
+  .historial-table-section .table {
+    min-width: 520px;
+    font-size: 12px;
+  }
+
+  .historial-table-section .table th,
+  .historial-table-section .table td {
+    padding: 9px 7px;
+  }
+
+  .fila-saldo-actual .saldo-label,
+  .fila-saldo-actual .saldo-monto {
+    font-size: 12px;
+  }
+}
+
+
+/* ========================================================
+   7.4 RESPONSIVE DEL GRÁFICO
+   ======================================================== */
+
+/* Gráfico en desktop. */
+@media (min-width: 993px) {
+  .grafico-page .container {
+    max-width: 1280px;
+  }
+
+  .grafico-page .grafico-content-section {
+    padding: 34px 38px 46px;
+  }
+
+  .grafico-page .chart-container {
+    max-width: 1050px;
+    height: 540px;
+  }
+}
+
+/* Gráfico en celular. */
+@media (max-width: 576px) {
+  .grafico-page .grafico-header-content {
+    flex-direction: column;
+    justify-content: center !important;
+    align-items: center !important;
+    text-align: center;
+  }
+
+  .grafico-page .grafico-header h2 {
+    width: 100%;
+    text-align: center;
+  }
+
+  .grafico-page .grafico-header-actions {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .grafico-page .grafico-header-actions .btn {
+    min-height: 48px;
+    padding: 12px 18px;
+    font-size: 14px;
+  }
+}
+
+
+/* ========================================================
+   8. RESPONSIVE DE ACCIONES EN DESKTOP
+   ======================================================== */
+
+@media (min-width: 769px) {
+  .acciones-page {
+    min-height: 100vh;
+    background: var(--fondo-page);
+  }
+
+  /* En desktop la pantalla usa todo el ancho. */
+  .acciones-page .container {
+    max-width: 100%;
+    padding: 0 !important;
+  }
+
+  /* La tarjeta deja de verse como tarjeta y se vuelve layout completo. */
+  .acciones-page .main-card {
+    width: 100%;
+    max-width: none;
+    min-height: 100vh;
+    padding: 0 60px 60px;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none !important;
+  }
+
+  /* Header curvo superior. */
+  .acciones-page .top-section {
+    position: relative;
+    z-index: 2;
+    margin: 0 -60px 75px;
+    padding: 28px 90px 44px;
+    overflow: visible;
+    border-radius: 0 0 48% 48% / 0 0 20% 20%;
+    background-color: #f8f9fa;
+    box-shadow: 0 14px 26px rgba(0, 0, 0, 0.14);
+  }
+
+  /* Sombra suave debajo del header curvo. */
+  .acciones-page .top-section::after {
+    content: "";
+    position: absolute;
+    left: 4%;
+    right: 4%;
+    bottom: -18px;
+    z-index: -1;
+    height: 34px;
+    border-radius: 0 0 50% 50% / 0 0 100% 100%;
+    background: rgba(0, 0, 0, 0.08);
+    filter: blur(10px);
+  }
+
+  .acciones-page .bank-logo-wrap {
+    position: absolute;
+    top: 16px;
+    left: 52%;
+    width: 480px;
+    height: 120px;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translateX(-50%);
+  }
+
+  .acciones-page .bank-logo {
+    width: 100%;
+    max-height: 120px;
+    object-fit: contain;
+  }
+
+  .acciones-page .user-panel {
+    width: 100%;
+    margin: 0;
+  }
+
+  /* Grid del header:
+     columna 1 = avatar,
+     columna 2 = datos,
+     columna 3 = espacio central,
+     columna 4 = cerrar sesión. */
+  .acciones-page .user-panel .row {
+    display: grid;
+    grid-template-columns: 90px 320px 1fr 300px;
+    align-items: center;
+    column-gap: 24px;
+  }
+
+  .acciones-page .user-panel .row > div {
+    max-width: none;
+    padding-left: 0;
+    padding-right: 0;
+    flex: none;
+  }
+
+  .acciones-page .user-panel .row > div:nth-child(1) {
+    grid-column: 1;
+  }
+
+  .acciones-page .user-panel .row > div:nth-child(2) {
+    grid-column: 2;
+    justify-self: start;
+    margin-left: 70px;
+  }
+
+  .acciones-page .user-panel .row > div:nth-child(3) {
+    grid-column: 4;
+    justify-self: end;
+    width: 300px;
+    display: flex;
+    justify-content: center;
+    margin-top: 0 !important;
+  }
+
+  .acciones-page .user-avatar {
+    width: 82px;
+    height: 82px;
+  }
+
+  .acciones-page .user-data-box p {
+    padding-left: 0;
+    font-size: 20px;
+    line-height: 1.8;
+  }
+
+  .acciones-page .btn-logout-custom {
+    width: 210px;
+    height: 72px;
+    border-radius: 22px;
+    font-size: 20px;
+  }
+
+  .acciones-page .actions-section {
+    padding: 0 90px;
+  }
+
+  /* Botones en cuadrícula de 3 columnas en desktop. */
+  .acciones-page .action-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 75px 90px;
+    margin: 0;
+  }
+
+  .acciones-page .action-buttons .col-md-6 {
+    max-width: none;
+    padding: 0;
+    margin: 0 !important;
+    flex: none;
+  }
+
+  .acciones-page .btn-bank {
+    width: 100%;
+    height: 150px;
+    border-radius: 36px;
+    font-size: 28px;
+  }
+}
+
+
+/* ========================================================
+   9. RESPONSIVE TABLET Y CELULAR
+   ======================================================== */
+
+@media (max-width: 768px) {
+  .atm-panel {
+    min-height: auto;
+    padding: 72px 22px 22px;
+  }
+
+  .atm-screen {
+    height: 180px;
+  }
+
+  .atm-screen input {
+    font-size: 34px;
+  }
+
+  /* En tablet/celular el cajero se apila verticalmente. */
+  .atm-content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .atm-keypad {
+    grid-template-columns: repeat(3, 90px);
+    gap: 15px;
+  }
+
+  .atm-keypad button {
+    height: 65px;
+  }
+
+  .atm-actions {
+    width: 100%;
+    align-items: center;
+  }
+
+  .atm-actions button {
+    width: 90%;
+    height: 70px;
+  }
+
+  .user-avatar {
+    width: 60px;
+    height: 60px;
+  }
+
+  .user-data-box p {
+    font-size: 16px;
+  }
+
+  .btn-logout-custom {
+    min-height: 56px;
+    font-size: 19px;
+  }
+}
+
+@media (max-width: 576px) {
+  .atm-page {
+    padding: 16px;
+  }
+
+  .atm-panel {
+    padding: 58px 16px 16px;
+    overflow: visible;
+  }
+
+  .atm-logo-wrap {
+    top: -18px;
+    width: 180px;
+    height: 60px;
+  }
+
+  .atm-logo {
+    max-height: 60px;
+  }
+
+  .atm-screen {
+    height: clamp(120px, 18dvh, 160px);
+    margin-bottom: 16px;
+  }
+
+  .atm-content {
+    flex: 1;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 0;
+  }
+
+  .atm-keypad {
+    width: 92%;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px 14px;
+    margin: 14px auto 0;
+  }
+
+  .atm-keypad button {
+    height: clamp(44px, 6.8dvh, 54px);
+    border-radius: 14px;
+    font-size: clamp(18px, 5vw, 22px);
+  }
+
+  .atm-actions {
+    width: 100%;
+    margin-top: 26px;
+    gap: 10px;
+  }
+
+  .atm-actions button {
+    width: 84%;
+    height: clamp(44px, 6.6dvh, 52px);
+    margin: 0 auto;
+    border-radius: 16px;
+    font-size: clamp(13px, 3.8vw, 19px);
+  }
+
+  .modal-footer .btn + .btn {
+    margin-left: 12px;
+  }
+}
+/* Fin styles.css de Proyecto Fase 2 */

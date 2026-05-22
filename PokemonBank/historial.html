@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <!-- Configuración básica del documento. -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Título de la pestaña. -->
+  <title>Historial | Pokémon Bank</title>
+
+  <!-- Icono de la pestaña. -->
+  <link rel="icon" type="image/png" href="images/PKBL.png">
+
+  <!-- Bootstrap para tabla, grid y estilos base. -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+  >
+
+  <!-- Estilos propios del proyecto. -->
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+
+<body class="bg-light">
+
+  <!-- Contenedor general del historial. -->
+  <div class="container py-5">
+    <div class="card shadow historial-card">
+
+      <!-- Encabezado de la página. -->
+      <header class="historial-header">
+        <div class="historial-header-content">
+          <h2 class="mb-0">Historial de transacciones</h2>
+
+          <div class="historial-header-actions">
+            <button
+              type="button"
+              class="btn btn-imprimir-custom btn-imprimir-reciente"
+              onclick="imprimirTransaccionReciente()"
+            >
+              Generar transacción reciente
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-imprimir-custom btn-imprimir-historial"
+              onclick="imprimirHistorialCompleto()"
+            >
+              Generar historial
+            </button>
+
+            <a href="acciones.html" class="btn btn-volver-custom">
+              Volver
+            </a>
+          </div>
+        </div>
+      </header>
+
+      <!-- Sección donde se muestra la tabla. -->
+      <section class="historial-table-section">
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped align-middle">
+            <thead class="table-head-custom">
+              <tr>
+                <th>#</th>
+                <th>Tipo de transacción</th>
+                <th>Monto</th>
+                <th>Fecha</th>
+                <th>Hora</th>
+              </tr>
+            </thead>
+
+            <!-- JavaScript inserta aquí las transacciones. -->
+            <tbody id="tablaHistorial"></tbody>
+          </table>
+        </div>
+
+        <!-- Mensaje visible únicamente cuando no hay transacciones. -->
+        <p id="mensajeVacio" class="text-center text-muted mt-3 d-none">
+          No hay transacciones registradas.
+        </p>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- SweetAlert para mostrar confirmaciones bonitas. -->
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+  <!-- jsPDF para generar los comprobantes PDF desde historial. -->
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@4.2.1/dist/jspdf.umd.min.js"></script>
+
+  <!-- Lógica principal del proyecto. -->
+  <script src="./js/main.js"></script>
+</body>
+</html>
+<!-- Fin historial.html de Proyecto Fase 2 -->

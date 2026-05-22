@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <!-- Codificación y configuración responsive. -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Título e icono de la pestaña. -->
+  <title>Acciones | Pokémon Bank</title>
+  <link rel="icon" type="image/png" href="images/PKBL.png">
+
+  <!-- Bootstrap para grid, botones y modales. -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+  >
+
+  <!-- Estilos propios del proyecto. -->
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+
+<body class="bg-light acciones-page">
+
+  <!-- =====================================================
+       CONTENIDO PRINCIPAL
+       ===================================================== -->
+  <div class="container py-5">
+    <main class="card shadow main-card mx-auto" aria-label="Panel principal de Pokémon Bank">
+
+      <!-- =================================================
+           ENCABEZADO: LOGO, USUARIO, CUENTA Y CIERRE
+           ================================================= -->
+      <section class="top-section">
+        <div class="bank-logo-wrap">
+          <img src="images/PKBC.png" alt="Pokémon Bank" class="bank-logo">
+        </div>
+
+        <div class="user-panel">
+          <div class="row align-items-center">
+
+            <!-- Foto del usuario. -->
+            <div class="col-3 col-sm-2 col-md-2 text-center">
+              <img
+                src="images/AshKetchumPFP.jpg"
+                alt="Foto de Ash Ketchum"
+                class="user-avatar"
+              >
+            </div>
+
+            <!-- Datos cargados desde localStorage con main.js. -->
+            <div class="col-9 col-sm-6 col-md-6">
+              <div class="user-data-box">
+                <p>
+                  <strong>Usuario:</strong>
+                  <span id="nombreUsuario"></span>
+                </p>
+
+                <p>
+                  <strong>Cuenta:</strong>
+                  <span id="numeroCuenta"></span>
+                </p>
+              </div>
+            </div>
+
+            <!-- Botón para cerrar sesión. -->
+            <div class="col-12 col-sm-4 col-md-4 mt-3 mt-sm-0">
+              <button
+                type="button"
+                class="btn btn-logout-custom btn-block"
+                onclick="cerrarSesion()"
+              >
+                Cerrar sesión
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+
+      <!-- =================================================
+           BOTONES PRINCIPALES DE OPERACIONES
+           ================================================= -->
+      <section class="actions-section" aria-label="Operaciones disponibles">
+        <div class="row action-buttons">
+
+          <!-- Abre el modal de depósito. -->
+          <div class="col-md-6 mb-3">
+            <button
+              type="button"
+              class="btn btn-bank btn-depositar w-100"
+              data-toggle="modal"
+              data-target="#modalDepositar"
+            >
+              Depositar
+            </button>
+          </div>
+
+          <!-- Abre el modal de retiro. -->
+          <div class="col-md-6 mb-3">
+            <button
+              type="button"
+              class="btn btn-bank btn-retirar w-100"
+              data-toggle="modal"
+              data-target="#modalRetirar"
+            >
+              Retirar
+            </button>
+          </div>
+
+          <!-- Consulta el saldo actual. -->
+          <div class="col-md-6 mb-3">
+            <button
+              type="button"
+              class="btn btn-bank btn-saldo w-100"
+              onclick="consultarSaldo()"
+            >
+              Consultar saldo
+            </button>
+          </div>
+
+          <!-- Abre el modal de pago de servicios. -->
+          <div class="col-md-6 mb-3">
+            <button
+              type="button"
+              class="btn btn-bank btn-servicios w-100"
+              data-toggle="modal"
+              data-target="#modalPagoServicio"
+            >
+              Pago de servicios
+            </button>
+          </div>
+
+          <!-- Abre la página de historial. -->
+          <div class="col-md-6 mb-3">
+            <a href="historial.html" class="btn btn-bank btn-historial w-100">
+              Ver historial
+            </a>
+          </div>
+
+          <!-- Abre la página del gráfico. -->
+          <div class="col-md-6 mb-3">
+            <a href="grafico.html" class="btn btn-bank btn-grafico w-100">
+              Ver gráfico
+            </a>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+
+  <!-- =====================================================
+       MODAL: DEPÓSITO
+       ===================================================== -->
+  <div
+    class="modal fade"
+    id="modalDepositar"
+    tabindex="-1"
+    aria-labelledby="modalDepositarLabel"
+    aria-hidden="true"
+    data-backdrop="static"
+    data-keyboard="false"
+  >
+    <div class="modal-dialog modal-form modal-atm-dialog">
+      <div class="modal-content">
+
+        <!-- Encabezado del modal. -->
+        <div class="modal-header modal-header-bank justify-content-center position-relative">
+          <h5 class="modal-title m-0" id="modalDepositarLabel">
+            Depósito
+          </h5>
+        </div>
+
+        <!-- Cuerpo del modal. -->
+        <div class="modal-body modal-atm-body">
+          <form id="formDepositar">
+
+            <!-- Pantalla donde se muestra el monto a depositar. -->
+            <div class="form-group modal-amount-group">
+              <label for="montoDeposito" class="modal-amount-label">
+                Monto a depositar:
+              </label>
+
+              <div class="input-group modal-amount-screen">
+                <div class="input-group-prepend">
+                  <span class="input-group-text dolar-bold">$</span>
+                </div>
+
+                <input
+                  type="number"
+                  id="montoDeposito"
+                  class="form-control modal-amount-input"
+                  readonly
+                  inputmode="none"
+                  autocomplete="off"
+                  placeholder="Ingrese el monto"
+                >
+              </div>
+            </div>
+
+            <!-- Keypad visual del depósito. -->
+            <div class="modal-atm-content" aria-label="Teclado de depósito">
+
+              <!-- Teclado numérico. -->
+              <div class="modal-atm-keypad">
+                <button type="button" onclick="agregarMonto('montoDeposito', '1')">1</button>
+                <button type="button" onclick="agregarMonto('montoDeposito', '2')">2</button>
+                <button type="button" onclick="agregarMonto('montoDeposito', '3')">3</button>
+
+                <button type="button" onclick="agregarMonto('montoDeposito', '4')">4</button>
+                <button type="button" onclick="agregarMonto('montoDeposito', '5')">5</button>
+                <button type="button" onclick="agregarMonto('montoDeposito', '6')">6</button>
+
+                <button type="button" onclick="agregarMonto('montoDeposito', '7')">7</button>
+                <button type="button" onclick="agregarMonto('montoDeposito', '8')">8</button>
+                <button type="button" onclick="agregarMonto('montoDeposito', '9')">9</button>
+
+                <!-- Espacios invisibles para centrar el cero. -->
+                <span class="keypad-empty"></span>
+                <button type="button" onclick="agregarMonto('montoDeposito', '0')">0</button>
+                <span class="keypad-empty"></span>
+              </div>
+
+              <!-- Botones laterales del depósito. -->
+              <div class="modal-atm-actions">
+                <button
+                  type="button"
+                  class="btn-modal-cancel modal-action-cancel"
+                  onclick="cancelarModalOperacion('deposito')"
+                >
+                  CANCELAR
+                </button>
+
+                <button
+                  type="button"
+                  class="btn-modal-clear modal-action-clear"
+                  onclick="limpiarMonto('montoDeposito')"
+                >
+                  LIMPIAR
+                </button>
+
+                <button
+                  type="button"
+                  class="btn-modal-confirm modal-action-confirm"
+                  onclick="procesarDeposito()"
+                >
+                  ENTER
+                </button>
+              </div>
+
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- =====================================================
+       MODAL: RETIRO
+       ===================================================== -->
+  <div
+    class="modal fade"
+    id="modalRetirar"
+    tabindex="-1"
+    aria-labelledby="modalRetirarLabel"
+    aria-hidden="true"
+    data-backdrop="static"
+    data-keyboard="false"
+  >
+    <div class="modal-dialog modal-form modal-atm-dialog">
+      <div class="modal-content">
+
+        <!-- Encabezado del modal. -->
+        <div class="modal-header modal-header-bank justify-content-center position-relative">
+          <h5 class="modal-title m-0" id="modalRetirarLabel">
+            Retiro
+          </h5>
+        </div>
+
+        <!-- Cuerpo del modal. -->
+        <div class="modal-body modal-atm-body">
+          <form id="formRetirar">
+
+            <!-- Pantalla donde se muestra el monto a retirar. -->
+            <div class="form-group modal-amount-group">
+              <label for="montoRetiro" class="modal-amount-label">
+                Monto a retirar:
+              </label>
+
+              <div class="input-group modal-amount-screen">
+                <div class="input-group-prepend">
+                  <span class="input-group-text dolar-bold">$</span>
+                </div>
+
+                <input
+                  type="number"
+                  id="montoRetiro"
+                  class="form-control modal-amount-input"
+                  readonly
+                  inputmode="none"
+                  autocomplete="off"
+                  placeholder="Ingrese el monto"
+                >
+              </div>
+            </div>
+
+            <!-- Keypad visual del retiro. -->
+            <div class="modal-atm-content" aria-label="Teclado de retiro">
+
+              <!-- Teclado numérico. -->
+              <div class="modal-atm-keypad">
+                <button type="button" onclick="agregarMonto('montoRetiro', '1')">1</button>
+                <button type="button" onclick="agregarMonto('montoRetiro', '2')">2</button>
+                <button type="button" onclick="agregarMonto('montoRetiro', '3')">3</button>
+
+                <button type="button" onclick="agregarMonto('montoRetiro', '4')">4</button>
+                <button type="button" onclick="agregarMonto('montoRetiro', '5')">5</button>
+                <button type="button" onclick="agregarMonto('montoRetiro', '6')">6</button>
+
+                <button type="button" onclick="agregarMonto('montoRetiro', '7')">7</button>
+                <button type="button" onclick="agregarMonto('montoRetiro', '8')">8</button>
+                <button type="button" onclick="agregarMonto('montoRetiro', '9')">9</button>
+
+                <!-- Espacios invisibles para centrar el cero. -->
+                <span class="keypad-empty"></span>
+                <button type="button" onclick="agregarMonto('montoRetiro', '0')">0</button>
+                <span class="keypad-empty"></span>
+              </div>
+
+              <!-- Botones laterales del retiro. -->
+              <div class="modal-atm-actions">
+                <button
+                  type="button"
+                  class="btn-modal-cancel modal-action-cancel"
+                  onclick="cancelarModalOperacion('retiro')"
+                >
+                  CANCELAR
+                </button>
+
+                <button
+                  type="button"
+                  class="btn-modal-clear modal-action-clear"
+                  onclick="limpiarMonto('montoRetiro')"
+                >
+                  LIMPIAR
+                </button>
+
+                <button
+                  type="button"
+                  class="btn-modal-confirm modal-action-confirm"
+                  onclick="procesarRetiro()"
+                >
+                  ENTER
+                </button>
+              </div>
+
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- =====================================================
+       MODAL: PAGO DE SERVICIOS
+       ===================================================== -->
+  <div
+    class="modal fade"
+    id="modalPagoServicio"
+    tabindex="-1"
+    aria-labelledby="modalPagoServicioLabel"
+    aria-hidden="true"
+    data-backdrop="static"
+    data-keyboard="false"
+  >
+    <div class="modal-dialog modal-form modal-atm-dialog modal-service-dialog">
+      <div class="modal-content">
+
+        <!-- Encabezado del modal. -->
+        <div class="modal-header modal-header-bank justify-content-center position-relative">
+          <h5 class="modal-title m-0" id="modalPagoServicioLabel">
+            Pago de servicios
+          </h5>
+        </div>
+
+        <!-- Cuerpo del modal. -->
+        <div class="modal-body modal-atm-body">
+          <form id="formPagoServicio">
+
+            <!-- Selector del servicio. -->
+            <div class="form-group modal-service-group">
+              <label for="tipoServicio" class="modal-amount-label modal-service-label">
+                Seleccione el servicio:
+              </label>
+
+              <div class="modal-service-screen">
+                <select id="tipoServicio" class="form-control modal-service-select">
+                  <option value="">Seleccione una opción</option>
+                  <option value="Agua potable">Agua potable</option>
+                  <option value="Energía eléctrica">Energía eléctrica</option>
+                  <option value="Internet">Internet</option>
+                  <option value="Telefonía">Telefonía</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Pantalla donde se muestra el monto a pagar. -->
+            <div class="form-group modal-amount-group">
+              <label for="montoServicio" class="modal-amount-label">
+                Monto a pagar:
+              </label>
+
+              <div class="input-group modal-amount-screen">
+                <div class="input-group-prepend">
+                  <span class="input-group-text dolar-bold">$</span>
+                </div>
+
+                <input
+                  type="number"
+                  id="montoServicio"
+                  class="form-control modal-amount-input"
+                  readonly
+                  inputmode="none"
+                  autocomplete="off"
+                  placeholder="Ingrese el monto"
+                >
+              </div>
+            </div>
+
+            <!-- Keypad visual del pago de servicios. -->
+            <div class="modal-atm-content" aria-label="Teclado de pago de servicios">
+
+              <!-- Teclado numérico. -->
+              <div class="modal-atm-keypad">
+                <button type="button" onclick="agregarMonto('montoServicio', '1')">1</button>
+                <button type="button" onclick="agregarMonto('montoServicio', '2')">2</button>
+                <button type="button" onclick="agregarMonto('montoServicio', '3')">3</button>
+
+                <button type="button" onclick="agregarMonto('montoServicio', '4')">4</button>
+                <button type="button" onclick="agregarMonto('montoServicio', '5')">5</button>
+                <button type="button" onclick="agregarMonto('montoServicio', '6')">6</button>
+
+                <button type="button" onclick="agregarMonto('montoServicio', '7')">7</button>
+                <button type="button" onclick="agregarMonto('montoServicio', '8')">8</button>
+                <button type="button" onclick="agregarMonto('montoServicio', '9')">9</button>
+
+                <!-- Espacios invisibles para centrar el cero. -->
+                <span class="keypad-empty"></span>
+                <button type="button" onclick="agregarMonto('montoServicio', '0')">0</button>
+                <span class="keypad-empty"></span>
+              </div>
+
+              <!-- Botones laterales del pago de servicios. -->
+              <div class="modal-atm-actions">
+                <button
+                  type="button"
+                  class="btn-modal-cancel modal-action-cancel"
+                  onclick="cancelarModalOperacion('servicio')"
+                >
+                  CANCELAR
+                </button>
+
+                <button
+                  type="button"
+                  class="btn-modal-clear modal-action-clear"
+                  onclick="limpiarPagoServicio()"
+                >
+                  LIMPIAR
+                </button>
+
+                <button
+                  type="button"
+                  class="btn-modal-confirm modal-action-confirm"
+                  onclick="procesarPagoServicio()"
+                >
+                  ENTER
+                </button>
+              </div>
+
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- =====================================================
+       LIBRERÍAS Y ARCHIVOS JAVASCRIPT
+       ===================================================== -->
+
+  <!-- jQuery es necesario para Bootstrap 4. -->
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+  <!-- Popper ayuda al funcionamiento de componentes de Bootstrap. -->
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+
+  <!-- JavaScript de Bootstrap para abrir/cerrar modales. -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
+
+  <!-- SweetAlert para alertas bonitas. -->
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+  <!-- jsPDF para generar comprobantes PDF. -->
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@4.2.1/dist/jspdf.umd.min.js"></script>
+
+  <!-- Lógica principal del proyecto. -->
+  <script src="./js/main.js"></script>
+</body>
+</html>
+<!-- Fin acciones.html de Proyecto Fase 2 -->

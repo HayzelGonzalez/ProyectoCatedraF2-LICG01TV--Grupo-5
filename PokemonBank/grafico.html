@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <!-- Configuración básica del documento. -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Título de la pestaña. -->
+  <title>Gráfico | Pokémon Bank</title>
+
+  <!-- Icono de la pestaña. -->
+  <link rel="icon" type="image/png" href="images/PKBL.png">
+
+  <!-- Bootstrap para estructura y estilos base. -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+  >
+
+  <!-- Estilos propios del proyecto. -->
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+
+<body class="bg-light grafico-page">
+
+  <!-- Contenedor general del gráfico. -->
+  <div class="container py-5">
+    <div class="card shadow grafico-card">
+
+      <!-- Encabezado de la página. -->
+      <header class="grafico-header">
+        <div class="grafico-header-content">
+          <h2 class="mb-0">Gráfico de transacciones</h2>
+
+          <div class="grafico-header-actions">
+            <button
+              type="button"
+              class="btn btn-reporte-custom"
+              onclick="preguntarReporteGraficoPDF()"
+            >
+              Generar reporte
+            </button>
+
+            <a href="acciones.html" class="btn btn-volver-custom">
+              Volver
+            </a>
+          </div>
+        </div>
+      </header>
+
+      <!-- Sección donde Chart.js dibuja el gráfico. -->
+      <section class="grafico-content-section">
+        <div class="chart-container">
+          <canvas id="graficoTransacciones"></canvas>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Chart.js para generar el gráfico de transacciones. -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- SweetAlert para confirmar la generación del reporte. -->
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+  <!-- jsPDF para generar el reporte PDF desde gráfico. -->
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@4.2.1/dist/jspdf.umd.min.js"></script>
+
+  <!-- Lógica principal del proyecto. -->
+  <script src="./js/main.js"></script>
+</body>
+</html>
+<!-- Fin grafico.html de Proyecto Fase 2 -->
