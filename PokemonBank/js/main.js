@@ -1575,4 +1575,4 @@ document.addEventListener("DOMContentLoaded", () => {
   mostrarGrafico();
   inicializarEventosModales();
 });
-/* Fin main.js de Proyecto Fase 2 */
+/* Fin main.js */
