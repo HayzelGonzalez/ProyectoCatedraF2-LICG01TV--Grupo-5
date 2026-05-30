@@ -166,16 +166,34 @@ function existeJQuery(selector) {
   return Boolean(window.jQuery && $(selector).length);
 }
 
-/* Agrega un número al input de monto usado por el keypad visual. */
-function agregarMonto(idInput, numero) {
+/* Agrega números o punto decimal al input de monto usado por el keypad visual. */
+function agregarMonto(idInput, valor) {
   const input = obtenerElemento(idInput);
 
   if (!input) return;
 
-  /* Evita montos exageradamente largos. */
-  if (input.value.length >= LIMITE_DIGITOS_MONTO) return;
+  const montoActual = input.value;
 
-  input.value += numero;
+  /* Permite solo un punto decimal. */
+  if (valor === "." && montoActual.includes(".")) return;
+
+  /* Si el usuario empieza con punto, se escribe 0. */
+  if (valor === "." && montoActual === "") {
+    input.value = "0.";
+    return;
+  }
+
+  /* Permite máximo 2 decimales. */
+  if (montoActual.includes(".")) {
+    const decimales = montoActual.split(".")[1];
+
+    if (decimales.length >= 2 && valor !== ".") return;
+  }
+
+  /* Evita montos demasiado largos. */
+  if (montoActual.length >= LIMITE_DIGITOS_MONTO) return;
+
+  input.value += valor;
 }
 
 /* Limpia un input de monto. */
@@ -1575,4 +1593,4 @@ document.addEventListener("DOMContentLoaded", () => {
   mostrarGrafico();
   inicializarEventosModales();
 });
-/* Fin main.js */
+/* Fin main.js de Proyecto Fase 2 */
