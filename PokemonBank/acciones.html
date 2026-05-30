@@ -190,7 +190,7 @@
                 </div>
 
                 <input
-                  type="number"
+                  type="text"
                   id="montoDeposito"
                   class="form-control modal-amount-input"
                   readonly
@@ -218,10 +218,11 @@
                 <button type="button" onclick="agregarMonto('montoDeposito', '8')">8</button>
                 <button type="button" onclick="agregarMonto('montoDeposito', '9')">9</button>
 
-                <!-- Espacios invisibles para centrar el cero. -->
-                <span class="keypad-empty"></span>
-                <button type="button" onclick="agregarMonto('montoDeposito', '0')">0</button>
-                <span class="keypad-empty"></span>
+                <!-- Fila inferior del teclado: permite ingresar cero y punto decimal. -->
+                <div class="keypad-bottom-row">
+                  <button type="button" onclick="agregarMonto('montoDeposito', '0')">0</button>
+                  <button type="button" onclick="agregarMonto('montoDeposito', '.')">.</button>
+                </div>
               </div>
 
               <!-- Botones laterales del depósito. -->
@@ -298,7 +299,7 @@
                 </div>
 
                 <input
-                  type="number"
+                  type="text"
                   id="montoRetiro"
                   class="form-control modal-amount-input"
                   readonly
@@ -326,10 +327,11 @@
                 <button type="button" onclick="agregarMonto('montoRetiro', '8')">8</button>
                 <button type="button" onclick="agregarMonto('montoRetiro', '9')">9</button>
 
-                <!-- Espacios invisibles para centrar el cero. -->
-                <span class="keypad-empty"></span>
-                <button type="button" onclick="agregarMonto('montoRetiro', '0')">0</button>
-                <span class="keypad-empty"></span>
+            <!-- Fila inferior del teclado: permite ingresar cero y punto decimal. -->
+            <div class="keypad-bottom-row">
+              <button type="button" onclick="agregarMonto('montoRetiro', '0')">0</button>
+              <button type="button" onclick="agregarMonto('montoRetiro', '.')">.</button>
+            </div>
               </div>
 
               <!-- Botones laterales del retiro. -->
@@ -423,7 +425,7 @@
                 </div>
 
                 <input
-                  type="number"
+                  type="text"
                   id="montoServicio"
                   class="form-control modal-amount-input"
                   readonly
@@ -451,10 +453,11 @@
                 <button type="button" onclick="agregarMonto('montoServicio', '8')">8</button>
                 <button type="button" onclick="agregarMonto('montoServicio', '9')">9</button>
 
-                <!-- Espacios invisibles para centrar el cero. -->
-                <span class="keypad-empty"></span>
-                <button type="button" onclick="agregarMonto('montoServicio', '0')">0</button>
-                <span class="keypad-empty"></span>
+                <!-- Fila inferior del teclado: permite ingresar cero y punto decimal. -->
+                <div class="keypad-bottom-row">
+                  <button type="button" onclick="agregarMonto('montoServicio', '0')">0</button>
+                  <button type="button" onclick="agregarMonto('montoServicio', '.')">.</button>
+                </div>
               </div>
 
               <!-- Botones laterales del pago de servicios. -->
@@ -516,4 +519,4 @@
   <script src="./js/main.js"></script>
 </body>
 </html>
-<!-- Fin acciones.html -->
+<!-- Fin acciones.html de Proyecto Fase 2 -->
