@@ -745,6 +745,14 @@ body {
   visibility: hidden;
 }
 
+/* Fila inferior del keypad.
+   Se usa para centrar los botones 0 y punto decimal. */
+.modal-atm-dialog .modal-atm-keypad .keypad-bottom-row {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+}
+
 
 /* ========================================================
    5.1 MODALES TIPO CAJERO EN DESKTOP
@@ -842,6 +850,15 @@ body {
     height: 66px;
     border-radius: 18px;
     font-size: 22px;
+  }
+
+  /* Botones 0 y punto decimal en desktop. */
+  .modal-atm-dialog .modal-atm-keypad .keypad-bottom-row {
+    gap: 28px;
+  }
+
+  .modal-atm-dialog .modal-atm-keypad .keypad-bottom-row button {
+    width: 135px;
   }
 
   /* Botones CANCELAR, LIMPIAR y ENTER. */
@@ -990,6 +1007,15 @@ body {
     height: 46px;
     border-radius: 14px;
     font-size: 18px;
+  }
+
+  /* Botones 0 y punto decimal en responsive. */
+  .modal-atm-dialog .modal-atm-keypad .keypad-bottom-row {
+    gap: 12px;
+  }
+
+  .modal-atm-dialog .modal-atm-keypad .keypad-bottom-row button {
+    width: calc((100% - 24px) / 3);
   }
 
   .modal-atm-dialog .modal-atm-actions {
@@ -2290,4 +2316,4 @@ body {
     margin-left: 12px;
   }
 }
-/* Fin styles.css */
+/* Fin styles.css de Proyecto Fase 2 */
